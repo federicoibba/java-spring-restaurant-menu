@@ -1,6 +1,7 @@
 package com.restaurant.ingredient;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,10 +46,10 @@ public class IngredientController {
     return ResponseEntity.ok().body(ingredientService.updateIngredient(id, ingredient.getName()));
   }
 
-  @DeleteMapping(value="/{id}")
+  @DeleteMapping(value = "/{id}")
   public ResponseEntity<Object> deleteIngredient(@PathVariable("id") String id) {
     ingredientService.deleteIngredient(id);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }
 

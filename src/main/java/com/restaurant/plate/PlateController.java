@@ -41,7 +41,7 @@ public class PlateController {
     }
   }
 
-  @PatchMapping(value="/{id}")
+  @PatchMapping(value = "/{id}")
   public ResponseEntity<Plate> updatePlate(@PathVariable("id") String id, @RequestBody() Plate plate) {
     return ResponseEntity.ok().body(plateService.updatePlate(id, plate.getName()));
   }
