@@ -1,4 +1,4 @@
-package com.restaurant.menu.model;
+package com.restaurant.ingredient;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "plates")
-public class Plate {
+@Table(name = "ingredients")
+public class Ingredient {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;

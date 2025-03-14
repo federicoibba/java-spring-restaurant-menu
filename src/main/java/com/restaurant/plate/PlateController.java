@@ -1,7 +1,5 @@
-package com.restaurant.menu.controller;
+package com.restaurant.plate;
 
-import com.restaurant.menu.model.Plate;
-import com.restaurant.menu.service.PlateService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

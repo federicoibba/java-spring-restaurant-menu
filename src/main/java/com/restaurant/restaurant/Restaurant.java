@@ -1,4 +1,4 @@
-package com.restaurant.menu.model;
+package com.restaurant.restaurant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

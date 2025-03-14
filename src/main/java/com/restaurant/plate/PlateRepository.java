@@ -1,6 +1,5 @@
-package com.restaurant.menu.repository;
+package com.restaurant.plate;
 
-import com.restaurant.menu.model.Plate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

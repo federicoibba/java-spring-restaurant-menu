@@ -1,4 +1,4 @@
-package com.restaurant.menu.repository;
+package com.restaurant.menu;
 
 import org.springframework.stereotype.Repository;
 

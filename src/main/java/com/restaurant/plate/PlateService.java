@@ -1,7 +1,5 @@
-package com.restaurant.menu.service;
+package com.restaurant.plate;
 
-import com.restaurant.menu.model.Plate;
-import com.restaurant.menu.repository.PlateRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

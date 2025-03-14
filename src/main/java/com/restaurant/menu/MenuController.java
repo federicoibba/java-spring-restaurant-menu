@@ -1,4 +1,4 @@
-package com.restaurant.menu.controller;
+package com.restaurant.menu;
 
 import org.springframework.web.bind.annotation.RestController;
 
