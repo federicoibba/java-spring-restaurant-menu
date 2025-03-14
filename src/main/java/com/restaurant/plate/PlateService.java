@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class PlateService {
+public class PlateService implements PlateServiceInterface {
   private PlateRepository plateRepository;
 
   public void savePlate(Plate plate) {
