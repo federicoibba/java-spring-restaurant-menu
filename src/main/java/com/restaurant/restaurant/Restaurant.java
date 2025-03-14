@@ -1,13 +1,17 @@
 package com.restaurant.restaurant;
 
+import com.restaurant.restaurantplate.RestaurantPlate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -33,4 +37,7 @@ public class Restaurant {
 
   @Column(name = "vat_number", length = 20, nullable = false, unique = true)
   private String vatNumber;
+
+  @OneToMany(mappedBy = "restaurant")
+  private List<RestaurantPlate> restaurantPlates;
 }
