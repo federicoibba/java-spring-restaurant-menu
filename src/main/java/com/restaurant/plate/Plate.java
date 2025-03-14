@@ -15,9 +15,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "plates")
 public class Plate {
   @Id
+  @Column(name = "id", length = 36)
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  @Column(name = "name", nullable = false)
+  @Column(name = "name", length = 60, nullable = false)
   private String name;
 }
