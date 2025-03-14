@@ -1,5 +1,6 @@
 package com.restaurant.ingredient;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,5 +17,7 @@ public class Ingredient {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
+
+  @Column(name = "name", nullable = false)
   private String name;
 }

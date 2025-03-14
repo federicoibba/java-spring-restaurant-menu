@@ -49,6 +49,6 @@ public class PlateController {
   @DeleteMapping(value = "/{id}")
   public ResponseEntity<Object> deletePlate(@PathVariable("id") String id) {
     plateService.deletePlate(id);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }
