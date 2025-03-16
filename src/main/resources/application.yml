@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/restaurants'
-    username: postgres
-    password: postgres
+    driver-class-name: org.postgresql.Driver
+    url: 'jdbc:postgresql://localhost:5555/restaurant'
+    username: 'restaurant_user'
+    password: 'restaurant_psw'
   jpa:
     generate-dll: true
     hibernate:
