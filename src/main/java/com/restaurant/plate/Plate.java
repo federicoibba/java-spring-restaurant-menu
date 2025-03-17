@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class Plate {
   private String name;
 
   @OneToMany(mappedBy = "plate")
-  private List<RestaurantPlate> restaurantPlates;
+  private Set<RestaurantPlate> restaurantPlates;
 
   @ManyToMany
   @JoinTable(
@@ -39,5 +39,13 @@ public class Plate {
     joinColumns = @JoinColumn(name = "plate_id"),
     inverseJoinColumns = @JoinColumn(name = "ingredient_id")
   )
-  private List<Ingredient> ingredients;
+  private Set<Ingredient> ingredients;
+
+  public void addIngredient(Ingredient ingredient) {
+    ingredients.add(ingredient);
+  }
+
+  public void removeIngredient(Ingredient ingredient){
+    ingredients.remove(ingredient);
+  }
 }

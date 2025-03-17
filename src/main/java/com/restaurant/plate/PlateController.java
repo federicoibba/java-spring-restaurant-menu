@@ -1,5 +1,7 @@
 package com.restaurant.plate;
 
+import com.restaurant.ingredient.Ingredient;
+import com.restaurant.ingredient.IngredientDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -22,12 +24,12 @@ public class PlateController {
   private PlateService plateService;
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Plate> getPlate(@PathVariable("id") String id) {
+  public ResponseEntity<PlateDto> getPlate(@PathVariable("id") String id) {
     return ResponseEntity.ok().body(plateService.getPlate(id));
   }
 
   @GetMapping(value = "/")
-  public ResponseEntity<List<Plate>> getPlates() {
+  public ResponseEntity<List<PlateDto>> getPlates() {
     return ResponseEntity.ok().body(plateService.getPlates());
   }
 
@@ -51,4 +53,21 @@ public class PlateController {
     plateService.deletePlate(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
+
+  @PostMapping(value = "/{id}/ingredient")
+  public ResponseEntity<List<IngredientDto>> addIngredients(@PathVariable("id") String plateId, @RequestBody List<Ingredient> ingredients) {
+    try {
+      List<IngredientDto> ingredientList = plateService.addIngredient(plateId, ingredients.get(0).getId());
+      return new ResponseEntity<>(ingredientList, HttpStatusCode.valueOf(201));
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatusCode.valueOf(500));
+    }
+  }
+
+  @DeleteMapping(value = "/{plateId}/ingredient/{ingredientId}")
+  public ResponseEntity<Object> removeIngredient(@PathVariable("plateId") String plateId, @PathVariable("ingredientId") String ingredientId) {
+    plateService.removeIngredient(plateId, ingredientId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
 }
