@@ -28,12 +28,12 @@ public class PlateController {
     return ResponseEntity.ok().body(plateService.getPlate(id));
   }
 
-  @GetMapping(value = "/")
+  @GetMapping
   public ResponseEntity<List<PlateDto>> getPlates() {
     return ResponseEntity.ok().body(plateService.getPlates());
   }
 
-  @PostMapping(value = "/")
+  @PostMapping
   public ResponseEntity<Plate> savePlate(@RequestBody Plate plate) {
     try {
       plateService.savePlate(plate);

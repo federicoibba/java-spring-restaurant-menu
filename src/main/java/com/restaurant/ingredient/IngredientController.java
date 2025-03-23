@@ -22,16 +22,16 @@ public class IngredientController {
   private IngredientService ingredientService;
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Ingredient> getIngredient(@PathVariable("id") String id) {
+  public ResponseEntity<IngredientDto> getIngredient(@PathVariable("id") String id) {
     return ResponseEntity.ok().body(ingredientService.getIngredient(id));
   }
 
-  @GetMapping(value = "/")
-  public ResponseEntity<List<Ingredient>> getIngrediens() {
+  @GetMapping
+  public ResponseEntity<List<IngredientDto>> getIngrediens() {
     return ResponseEntity.ok().body(ingredientService.getIngredients());
   }
 
-  @PostMapping(value = "/")
+  @PostMapping
   public ResponseEntity<Ingredient> createIngredient(@RequestBody Ingredient ingredient) {
     try {
       ingredientService.saveIngredient(ingredient);
@@ -42,7 +42,7 @@ public class IngredientController {
   }
 
   @PatchMapping(value = "/{id}")
-  public ResponseEntity<Ingredient> updateIngredient(@PathVariable("id") String id, @RequestBody Ingredient ingredient){
+  public ResponseEntity<IngredientDto> updateIngredient(@PathVariable("id") String id, @RequestBody Ingredient ingredient){
     return ResponseEntity.ok().body(ingredientService.updateIngredient(id, ingredient.getName()));
   }
 

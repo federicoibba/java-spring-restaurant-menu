@@ -2,7 +2,7 @@ package com.restaurant.plate;
 
 import com.restaurant.ingredient.Ingredient;
 import com.restaurant.ingredient.IngredientDto;
-import com.restaurant.ingredient.IngredientService;
+import com.restaurant.ingredient.IngredientRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PlateService implements PlateServiceInterface {
   private PlateRepository plateRepository;
-  private IngredientService ingredientService;
+  private IngredientRepository ingredientRepository;
 
   @Override
   public void savePlate(Plate plate) {
@@ -56,11 +56,7 @@ public class PlateService implements PlateServiceInterface {
   @Transactional
   public List<IngredientDto> addIngredient(String plateId, String ingredientId) {
     Plate plate = plateRepository.findById(plateId).orElseThrow();
-    Ingredient ingredient = ingredientService.getIngredient(ingredientId);
-
-    if (ingredient == null) {
-      throw new RuntimeException("Ingredient does not exist.");
-    }
+    Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow();
 
     plate.addIngredient(ingredient);
 
@@ -71,9 +67,9 @@ public class PlateService implements PlateServiceInterface {
   @Transactional
   public void removeIngredient(String plateId, String ingredientId) {
     Plate plate = plateRepository.findById(plateId).orElseThrow();
-    Ingredient ingredient = ingredientService.getIngredient(ingredientId);
+    Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow();
 
-    if (ingredient != null && plate.getIngredients().contains(ingredient)) {
+    if (plate.getIngredients().contains(ingredient)) {
       plate.removeIngredient(ingredient);
     } else {
       throw new RuntimeException("Ingredient " + ingredient.getName() + "is not present");

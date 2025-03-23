@@ -1,5 +1,6 @@
 package com.restaurant.restaurant;
 
+import com.restaurant.plate.Plate;
 import com.restaurant.restaurantplate.RestaurantPlate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +12,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Data
@@ -39,5 +40,5 @@ public class Restaurant {
   private String vatNumber;
 
   @OneToMany(mappedBy = "restaurant")
-  private List<RestaurantPlate> restaurantPlates;
+  private Set<RestaurantPlate> restaurantPlates;
 }

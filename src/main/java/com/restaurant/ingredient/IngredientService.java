@@ -17,18 +17,18 @@ public class IngredientService implements IngredientServiceInterface {
   }
 
   @Override
-  public Ingredient getIngredient(String id) {
-    return ingredientRepository.findById(id).orElse(null);
+  public IngredientDto getIngredient(String id) {
+    return IngredientDto.mapIngredientToDto(ingredientRepository.findById(id).orElseThrow());
   }
 
   @Override
-  public List<Ingredient> getIngredients() {
-    return ingredientRepository.findAll();
+  public List<IngredientDto> getIngredients() {
+    return ingredientRepository.findAll().stream().map(IngredientDto::mapIngredientToDto).toList();
   }
 
   @Override
   @Transactional
-  public Ingredient updateIngredient(String id, String name) {
+  public IngredientDto updateIngredient(String id, String name) {
     Ingredient ingredient = ingredientRepository.findById(id)
       .orElseThrow(() -> new RuntimeException("Ingredient not found"));
 
@@ -36,7 +36,7 @@ public class IngredientService implements IngredientServiceInterface {
       ingredient.setName(name);
     }
 
-    return ingredient;
+    return IngredientDto.mapIngredientToDto(ingredient);
   }
 
   @Override
