@@ -35,13 +35,8 @@ public class IngredientController {
   }
 
   @PostMapping
-  public ResponseEntity<Ingredient> createIngredient(@RequestBody Ingredient ingredient) {
-    try {
-      ingredientService.saveIngredient(ingredient);
-      return new ResponseEntity<>(ingredient, HttpStatusCode.valueOf(201));
-    } catch (Exception e) {
-      return new ResponseEntity<>(HttpStatusCode.valueOf(500));
-    }
+  public ResponseEntity<IngredientDto> createIngredient(@RequestBody Ingredient ingredient) {
+    return new ResponseEntity<>(ingredientService.saveIngredient(ingredient), HttpStatusCode.valueOf(201));
   }
 
   @PatchMapping(value = "/{id}")

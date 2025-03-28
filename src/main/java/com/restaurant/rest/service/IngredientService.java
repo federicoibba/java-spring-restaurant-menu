@@ -1,6 +1,8 @@
 package com.restaurant.rest.service;
 
 import com.restaurant.rest.entity.Ingredient;
+import com.restaurant.rest.exception.BadRequestException;
+import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.IngredientRepository;
 import com.restaurant.rest.dto.IngredientDto;
 import jakarta.transaction.Transactional;
@@ -15,13 +17,19 @@ public class IngredientService implements IngredientServiceInterface {
   private IngredientRepository ingredientRepository;
 
   @Override
-  public void saveIngredient(Ingredient ingredient) {
-    ingredientRepository.save(ingredient);
+  public IngredientDto saveIngredient(Ingredient ingredient) {
+    if (ingredient.getName() == null) {
+      throw new BadRequestException("Cannot create ingredient - Name is required");
+    }
+
+    return IngredientDto.mapIngredientToDto(ingredientRepository.save(ingredient));
   }
 
   @Override
   public IngredientDto getIngredient(String id) {
-    return IngredientDto.mapIngredientToDto(ingredientRepository.findById(id).orElseThrow());
+    return IngredientDto.mapIngredientToDto(ingredientRepository.findById(id).orElseThrow(
+      () -> new NotFoundException("Ingredient not found with id " + id)
+    ));
   }
 
   @Override
@@ -33,7 +41,7 @@ public class IngredientService implements IngredientServiceInterface {
   @Transactional
   public IngredientDto updateIngredient(String id, String name) {
     Ingredient ingredient = ingredientRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+      .orElseThrow(() -> new BadRequestException("Cannot update an ingredient that does not exist"));
 
     if (name != null) {
       ingredient.setName(name);
@@ -44,6 +52,10 @@ public class IngredientService implements IngredientServiceInterface {
 
   @Override
   public void deleteIngredient(String id) {
+    if (!ingredientRepository.existsById(id)) {
+      throw new BadRequestException("Cannot delete an ingredient that does not exist");
+    }
+
     ingredientRepository.deleteById(id);
   }
 }
