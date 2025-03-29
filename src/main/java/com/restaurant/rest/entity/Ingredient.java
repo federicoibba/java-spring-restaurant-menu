@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,7 @@ public class Ingredient {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @NotBlank(message = "name is mandatory")
   @Column(name = "name", length = 50, nullable = false)
   private String name;
 

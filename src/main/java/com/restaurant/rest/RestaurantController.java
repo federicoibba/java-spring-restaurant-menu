@@ -3,6 +3,7 @@ package com.restaurant.rest;
 import com.restaurant.rest.entity.Restaurant;
 import com.restaurant.rest.dto.RestaurantDto;
 import com.restaurant.rest.service.RestaurantService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class RestaurantController {
   }
 
   @PostMapping
-  public ResponseEntity<RestaurantDto> createRestaurant(@RequestBody Restaurant restaurant) {
+  public ResponseEntity<RestaurantDto> createRestaurant(@Valid @RequestBody Restaurant restaurant) {
     return ResponseEntity.ok(restaurantService.createRestaurant(restaurant));
   }
 

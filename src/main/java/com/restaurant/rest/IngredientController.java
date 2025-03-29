@@ -3,6 +3,7 @@ package com.restaurant.rest;
 import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.dto.IngredientDto;
 import com.restaurant.rest.service.IngredientService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -35,7 +36,7 @@ public class IngredientController {
   }
 
   @PostMapping
-  public ResponseEntity<IngredientDto> createIngredient(@RequestBody Ingredient ingredient) {
+  public ResponseEntity<IngredientDto> createIngredient(@Valid @RequestBody Ingredient ingredient) {
     return new ResponseEntity<>(ingredientService.saveIngredient(ingredient), HttpStatusCode.valueOf(201));
   }
 

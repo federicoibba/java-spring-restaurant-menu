@@ -5,6 +5,7 @@ import com.restaurant.rest.entity.Plate;
 import com.restaurant.rest.dto.IngredientDto;
 import com.restaurant.rest.dto.PlateDto;
 import com.restaurant.rest.service.PlateService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -37,7 +38,7 @@ public class PlateController {
   }
 
   @PostMapping
-  public ResponseEntity<Plate> savePlate(@RequestBody Plate plate) {
+  public ResponseEntity<Plate> savePlate(@Valid @RequestBody Plate plate) {
     try {
       plateService.savePlate(plate);
       return new ResponseEntity<>(plate, HttpStatusCode.valueOf(201));

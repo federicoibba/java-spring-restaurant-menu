@@ -18,10 +18,6 @@ public class IngredientService implements IngredientServiceInterface {
 
   @Override
   public IngredientDto saveIngredient(Ingredient ingredient) {
-    if (ingredient.getName() == null) {
-      throw new BadRequestException("Cannot create ingredient - Name is required");
-    }
-
     return IngredientDto.mapIngredientToDto(ingredientRepository.save(ingredient));
   }
 
@@ -53,7 +49,7 @@ public class IngredientService implements IngredientServiceInterface {
   @Override
   public void deleteIngredient(String id) {
     if (!ingredientRepository.existsById(id)) {
-      throw new BadRequestException("Cannot delete an ingredient that does not exist");
+      throw new NotFoundException("Cannot delete an ingredient that does not exist");
     }
 
     ingredientRepository.deleteById(id);

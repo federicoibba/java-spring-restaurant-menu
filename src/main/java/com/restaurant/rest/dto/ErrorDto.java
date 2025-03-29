@@ -1,4 +1,4 @@
-package com.restaurant.rest.exception;
+package com.restaurant.rest.dto;
 
 import org.springframework.http.HttpStatus;
 

@@ -1,6 +1,8 @@
 package com.restaurant.rest.service;
 
 import com.restaurant.rest.entity.Restaurant;
+import com.restaurant.rest.exception.BadRequestException;
+import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.RestaurantRepository;
 import com.restaurant.rest.dto.RestaurantDto;
 import jakarta.transaction.Transactional;
@@ -14,11 +16,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RestaurantService implements RestaurantServiceInterface {
   private RestaurantRepository restaurantRepository;
-  private PlateService plateService;
 
   @Override
   public RestaurantDto getRestaurant(String id) {
-    return restaurantRepository.findById(id).map(RestaurantDto::mapToDto).orElse(null);
+    return restaurantRepository.findById(id).map(RestaurantDto::mapToDto).orElseThrow(
+            () -> new NotFoundException("Restaurant not found with id" + id)
+    );
   }
 
   @Override
@@ -34,8 +37,9 @@ public class RestaurantService implements RestaurantServiceInterface {
   @Transactional
   @Override
   public RestaurantDto updateRestaurant(String id, Restaurant restaurant) {
-    Restaurant restaurantToUpdate = restaurantRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+    Restaurant restaurantToUpdate = restaurantRepository.findById(id).orElseThrow(
+            () -> new BadRequestException("Cannot update a restaurant that does not exist")
+    );
 
     updateRestaurantFields(restaurant, restaurantToUpdate);
 
@@ -44,7 +48,10 @@ public class RestaurantService implements RestaurantServiceInterface {
 
   @Override
   public void deleteRestaurant(String id) {
-    restaurantRepository.deleteById(id);
+    Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
+            () -> new BadRequestException("Cannot update a restaurant that does not exist")
+    );
+    restaurantRepository.delete(restaurant);
   }
 
   private void updateRestaurantFields(Restaurant source, Restaurant target) {

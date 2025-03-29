@@ -3,6 +3,7 @@ package com.restaurant.rest.service;
 import com.restaurant.rest.entity.Plate;
 import com.restaurant.rest.entity.RestaurantPlate;
 import com.restaurant.rest.entity.RestaurantPlateId;
+import com.restaurant.rest.exception.BadRequestException;
 import com.restaurant.rest.repository.PlateRepository;
 import com.restaurant.rest.repository.RestaurantPlateRepository;
 import com.restaurant.rest.dto.RestaurantPlateDto;
@@ -17,36 +18,42 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class RestaurantPlateService implements RestaurantPlateServiceInterface {
-  private RestaurantPlateRepository restaurantPlateRepository;
-  private RestaurantRepository restaurantRepository;
-  private PlateRepository plateRepository;
+    private RestaurantPlateRepository restaurantPlateRepository;
+    private RestaurantRepository restaurantRepository;
+    private PlateRepository plateRepository;
 
-  @Override
-  public List<RestaurantPlateDto> getPlates(String restaurantId) {
-    return restaurantPlateRepository.findByRestaurantId(restaurantId).stream().map(RestaurantPlateDto::mapToDto).toList();
-  }
+    @Override
+    public List<RestaurantPlateDto> getPlates(String restaurantId) {
+        return restaurantPlateRepository.findByRestaurantId(restaurantId).stream().map(RestaurantPlateDto::mapToDto).toList();
+    }
 
-  @Override
-  @Transactional
-  public RestaurantPlateDto addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
-    Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow();
-    Plate plate = plateRepository.findById(restaurantPlateDto.getPlateId()).orElseThrow();
+    @Override
+    @Transactional
+    public RestaurantPlateDto addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
+                () -> new BadRequestException("Restaurant not found")
+        );
+        Plate plate = plateRepository.findById(restaurantPlateDto.getPlateId()).orElseThrow(
+                () -> new BadRequestException("Plate not found")
+        );
 
-    RestaurantPlateId id = new RestaurantPlateId(restaurant.getId(), plate.getId());
+        RestaurantPlateId id = new RestaurantPlateId(restaurant.getId(), plate.getId());
 
-    RestaurantPlate restaurantPlate = new RestaurantPlate();
-    restaurantPlate.setId(id);
-    restaurantPlate.setRestaurant(restaurant);
-    restaurantPlate.setPlate(plate);
-    restaurantPlate.setPrice(restaurantPlateDto.getPrice());
+        RestaurantPlate restaurantPlate = new RestaurantPlate();
+        restaurantPlate.setId(id);
+        restaurantPlate.setRestaurant(restaurant);
+        restaurantPlate.setPlate(plate);
+        restaurantPlate.setPrice(restaurantPlateDto.getPrice());
 
-    return RestaurantPlateDto.mapToDto(restaurantPlateRepository.save(restaurantPlate));
-  }
+        return RestaurantPlateDto.mapToDto(restaurantPlateRepository.save(restaurantPlate));
+    }
 
-  @Override
-  public void removePlateFromRestaurant(String restaurantId, String plateId) {
-    RestaurantPlate restaurantPlate = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurantId, plateId).orElseThrow();
+    @Override
+    public void removePlateFromRestaurant(String restaurantId, String plateId) {
+        RestaurantPlate restaurantPlate = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurantId, plateId).orElseThrow(
+                () -> new BadRequestException("Cannot delete the combination of plate and restaurant provided")
+        );
 
-    restaurantPlateRepository.delete(restaurantPlate);
-  }
+        restaurantPlateRepository.delete(restaurantPlate);
+    }
 }
