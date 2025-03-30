@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "ingredients")
+@Table(name = "ingredients", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class Ingredient {
   @Id
   @Column(name="id", length = 36)
