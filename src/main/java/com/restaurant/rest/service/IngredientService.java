@@ -1,7 +1,6 @@
 package com.restaurant.rest.service;
 
 import com.restaurant.rest.entity.Ingredient;
-import com.restaurant.rest.exception.BadRequestException;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.IngredientRepository;
 import com.restaurant.rest.dto.IngredientDto;
@@ -37,7 +36,7 @@ public class IngredientService implements IngredientServiceInterface {
   @Transactional
   public IngredientDto updateIngredient(String id, String name) {
     Ingredient ingredient = ingredientRepository.findById(id)
-      .orElseThrow(() -> new BadRequestException("Cannot update an ingredient that does not exist"));
+      .orElseThrow(() -> new NotFoundException("Cannot update an ingredient that does not exist"));
 
     if (name != null) {
       ingredient.setName(name);

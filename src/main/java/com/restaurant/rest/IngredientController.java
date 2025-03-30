@@ -1,5 +1,6 @@
 package com.restaurant.rest;
 
+import com.restaurant.rest.docs.IngredientControllerOpenApi;
 import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.dto.IngredientDto;
 import com.restaurant.rest.service.IngredientService;
@@ -22,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/ingredient")
 @AllArgsConstructor
-public class IngredientController {
+public class IngredientController implements IngredientControllerOpenApi {
   private IngredientService ingredientService;
 
   @GetMapping(value = "/{id}")
@@ -31,7 +32,7 @@ public class IngredientController {
   }
 
   @GetMapping
-  public ResponseEntity<List<IngredientDto>> getIngrediens() {
+  public ResponseEntity<List<IngredientDto>> getIngredients() {
     return ResponseEntity.ok().body(ingredientService.getIngredients());
   }
 
@@ -41,7 +42,7 @@ public class IngredientController {
   }
 
   @PatchMapping(value = "/{id}")
-  public ResponseEntity<IngredientDto> updateIngredient(@PathVariable("id") String id, @RequestBody Ingredient ingredient){
+  public ResponseEntity<IngredientDto> updateIngredient(@PathVariable("id") String id, @Valid @RequestBody Ingredient ingredient){
     return ResponseEntity.ok().body(ingredientService.updateIngredient(id, ingredient.getName()));
   }
 
