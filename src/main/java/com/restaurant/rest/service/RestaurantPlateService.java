@@ -4,6 +4,7 @@ import com.restaurant.rest.entity.Plate;
 import com.restaurant.rest.entity.RestaurantPlate;
 import com.restaurant.rest.entity.RestaurantPlateId;
 import com.restaurant.rest.exception.BadRequestException;
+import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.PlateRepository;
 import com.restaurant.rest.repository.RestaurantPlateRepository;
 import com.restaurant.rest.dto.RestaurantPlateDto;
@@ -23,16 +24,20 @@ public class RestaurantPlateService {
     private PlateRepository plateRepository;
 
     public List<RestaurantPlateDto> getPlates(String restaurantId) {
+        if (!restaurantRepository.existsById(restaurantId)){
+            throw new NotFoundException("Restaurant not found");
+        }
+
         return restaurantPlateRepository.findByRestaurantId(restaurantId).stream().map(RestaurantPlateDto::mapToDto).toList();
     }
 
     @Transactional
     public RestaurantPlateDto addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
-                () -> new BadRequestException("Restaurant not found")
+                () -> new NotFoundException("Cannot add a plate to a restaurant that does not exist")
         );
         Plate plate = plateRepository.findById(restaurantPlateDto.getPlateId()).orElseThrow(
-                () -> new BadRequestException("Plate not found")
+                () -> new BadRequestException("Cannot add a plate that does not exist to a restaurant")
         );
 
         RestaurantPlateId id = new RestaurantPlateId(restaurant.getId(), plate.getId());

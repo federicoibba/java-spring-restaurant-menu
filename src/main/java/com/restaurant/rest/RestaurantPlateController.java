@@ -1,7 +1,9 @@
 package com.restaurant.rest;
 
+import com.restaurant.rest.docs.RestaurantPlateControllerDocs;
 import com.restaurant.rest.dto.RestaurantPlateDto;
 import com.restaurant.rest.service.RestaurantPlateService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1/restaurant/{restaurantId}/plate")
-public class RestaurantPlateController {
+public class RestaurantPlateController implements RestaurantPlateControllerDocs {
   private RestaurantPlateService restaurantPlateService;
+
 
   @GetMapping
   public ResponseEntity<List<RestaurantPlateDto>> getPlates(@PathVariable("restaurantId") String restaurantId) {
@@ -29,7 +32,7 @@ public class RestaurantPlateController {
   @PostMapping
   public ResponseEntity<RestaurantPlateDto> addPlateToRestaurant(
     @PathVariable("restaurantId") String restaurantId,
-    @RequestBody RestaurantPlateDto restaurantPlateDto
+    @Valid @RequestBody RestaurantPlateDto restaurantPlateDto
   ) {
     return ResponseEntity.status(HttpStatus.CREATED).body(restaurantPlateService.addPlateToRestaurant(restaurantId, restaurantPlateDto));
   }

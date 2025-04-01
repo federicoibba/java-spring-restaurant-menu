@@ -1,5 +1,6 @@
 package com.restaurant.rest;
 
+import com.restaurant.rest.docs.RestaurantControllerDocs;
 import com.restaurant.rest.entity.Restaurant;
 import com.restaurant.rest.dto.RestaurantDto;
 import com.restaurant.rest.service.RestaurantService;
@@ -20,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/restaurant")
 @AllArgsConstructor
-public class RestaurantController {
+public class RestaurantController implements RestaurantControllerDocs {
   private RestaurantService restaurantService;
 
   @GetMapping(value = "/{id}")
@@ -39,7 +40,7 @@ public class RestaurantController {
   }
 
   @PatchMapping(value = "/{id}")
-  public ResponseEntity<RestaurantDto> updateRestaurant(@PathVariable("id") String id, @RequestBody Restaurant restaurant) {
+  public ResponseEntity<RestaurantDto> updateRestaurant(@PathVariable("id") String id, @Valid @RequestBody Restaurant restaurant) {
     return ResponseEntity.ok(restaurantService.updateRestaurant(id, restaurant));
   }
 

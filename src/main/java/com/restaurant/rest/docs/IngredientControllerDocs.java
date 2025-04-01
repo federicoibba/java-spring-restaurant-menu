@@ -31,7 +31,7 @@ public interface IngredientControllerDocs {
             description = "Ingredient not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Ingredient not found\" }"))
     )
-    ResponseEntity<IngredientDto> getIngredient(@Parameter(description = "ID of the ingredient to be searched") @PathVariable("id") String id);
+    ResponseEntity<IngredientDto> getIngredient(@Parameter(description = "ID of the ingredient to retrieve") @PathVariable("id") String id);
 
     @Operation(summary = "Get a list of ingredients")
     @ApiResponse(
@@ -49,7 +49,7 @@ public interface IngredientControllerDocs {
     )
     @ApiResponse(
             responseCode = "400",
-            description = "Bad request",
+            description = "Bad request - A field is mandatory",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"name is mandatory\" }"))
     )
     ResponseEntity<IngredientDto> createIngredient(
@@ -69,7 +69,7 @@ public interface IngredientControllerDocs {
     )
     @ApiResponse(
             responseCode = "400",
-            description = "Bad request",
+            description = "Bad request - A field is mandatory",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"name is mandatory\" }"))
     )
     @ApiResponse(
@@ -94,7 +94,7 @@ public interface IngredientControllerDocs {
     )
     @ApiResponse(
             responseCode = "404",
-            description = "Not found",
+            description = "Ingredient to delete not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Cannot delete an ingredient that does not exist\" }"))
     )
     ResponseEntity<Object> deleteIngredient(@Parameter(description = "ID of the ingredient to delete") @PathVariable("id") String id);
