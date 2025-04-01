@@ -27,6 +27,17 @@ public interface RestaurantPlateControllerDocs {
     @Parameter(description = "ID of the restaurant to get the plates from") @PathVariable("restaurantId")
     String restaurantId);
 
+  @Operation(summary = "Update a plate price from a restaurant")
+  @ApiResponse(responseCode = "200", description = "Plate updated with success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantPlateDto.class)))
+  @ApiResponse(responseCode = "400", description = "Bad request - price is mandatory", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"price is mandatory\" }")))
+  @ApiResponse(responseCode = "404", description = "Restaurant not found / Plate not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Cannot update the combination of plate and restaurant provided\" }")))
+  ResponseEntity<RestaurantPlateDto> updateRestaurantPlate(
+    @Parameter(description = "ID of the restaurant to update the plates from") @PathVariable("restaurantId")
+    String restaurantId,
+    @Parameter(description = "ID of the plate to update the price") @PathVariable("plateId") String plateId,
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Price to update", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantPlateDto.class), examples = @ExampleObject(value = "{ \"price\": \"29.99\" }")))
+    @RequestBody RestaurantPlateDto restaurantPlateDto);
+
   @Operation(summary = "Add a plate to a restaurant")
   @ApiResponse(responseCode = "201", description = "Plate added with success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantPlateDto.class)))
   @ApiResponse(responseCode = "400", description = "Bad request - Plate does not exist", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"Cannot add a plate that does not exist to a restaurant\" }")))

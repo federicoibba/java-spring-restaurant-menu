@@ -18,6 +18,7 @@ public enum ExceptionErrors {
   RESTAURANT_UPDATE_NOT_FOUND("Cannot update a restaurant that does not exist"),
   RESTAURANT_DELETE_NOT_FOUND("Cannot delete a restaurant that does not exist"),
   RESTAURANT_PLATE_ALREADY_PRESENT("The plate provided is already present in the restaurant"),
+  RESTAURANT_PLATE_CANNOT_UPDATE("Cannot update the combination of plate and restaurant provided"),
   RESTAURANT_PLATE_CANNOT_DELETE("Cannot delete the combination of plate and restaurant provided"),
 
   // Plate Errors

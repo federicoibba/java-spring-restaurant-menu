@@ -32,6 +32,20 @@ public class RestaurantPlateService {
   }
 
   @Transactional
+  public RestaurantPlate updateRestaurantPlate(String restaurantId, String plateId, Double price) {
+    Restaurant restaurant = restaurantService.getRestaurant(restaurantId);
+    Plate plate = plateService.getPlate(plateId);
+
+    RestaurantPlate restaurantPlateEntry = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurant.getId(),
+        plate.getId())
+      .orElseThrow(() -> new BadRequestException(ExceptionErrors.RESTAURANT_PLATE_CANNOT_UPDATE.getMessage()));
+
+    restaurantPlateEntry.setPrice(price);
+
+    return restaurantPlateEntry;
+  }
+
+  @Transactional
   public RestaurantPlate addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
     Restaurant restaurant = restaurantService.getRestaurant(restaurantId);
     Plate plate = plateService.getPlate(restaurantPlateDto.getPlateId());

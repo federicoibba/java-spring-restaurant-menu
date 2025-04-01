@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,7 @@ public class RestaurantPlate {
   @JoinColumn(name = "plate_id", columnDefinition = "VARCHAR(36)")
   private Plate plate;
 
+  @NotNull
   @Column(nullable = false)
   private Double price;
 }
