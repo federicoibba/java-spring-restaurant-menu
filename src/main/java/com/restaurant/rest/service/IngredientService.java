@@ -2,6 +2,7 @@ package com.restaurant.rest.service;
 
 import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.exception.BadRequestException;
+import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.IngredientRepository;
 import com.restaurant.rest.dto.IngredientDto;
@@ -19,7 +20,7 @@ public class IngredientService implements IngredientServiceInterface {
   @Override
   public IngredientDto saveIngredient(Ingredient ingredient) {
     if (ingredientRepository.findByName(ingredient.getName()).isPresent()) {
-      throw new BadRequestException("Ingredient already exists");
+      throw new BadRequestException(ExceptionErrors.INGREDIENT_ALREADY_EXIST.getMessage());
     }
 
     return IngredientDto.mapIngredientToDto(ingredientRepository.save(ingredient));
@@ -28,7 +29,7 @@ public class IngredientService implements IngredientServiceInterface {
   @Override
   public IngredientDto getIngredient(String id) {
     return IngredientDto.mapIngredientToDto(ingredientRepository.findById(id).orElseThrow(
-      () -> new NotFoundException("Ingredient not found with id " + id)
+      () -> new NotFoundException(ExceptionErrors.INGREDIENT_NOT_FOUND.getMessage() + id)
     ));
   }
 
@@ -41,11 +42,11 @@ public class IngredientService implements IngredientServiceInterface {
   @Transactional
   public IngredientDto updateIngredient(String id, String name) {
     if (ingredientRepository.findByName(name).isPresent()) {
-      throw new BadRequestException("Ingredient already exists");
+      throw new BadRequestException(ExceptionErrors.INGREDIENT_ALREADY_EXIST.getMessage());
     }
 
     Ingredient ingredient = ingredientRepository.findById(id)
-      .orElseThrow(() -> new NotFoundException("Cannot update an ingredient that does not exist"));
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.INGREDIENT_UPDATE_NOT_FOUND.getMessage()));
 
     if (name != null) {
       ingredient.setName(name);
@@ -57,7 +58,7 @@ public class IngredientService implements IngredientServiceInterface {
   @Override
   public void deleteIngredient(String id) {
     if (!ingredientRepository.existsById(id)) {
-      throw new NotFoundException("Cannot delete an ingredient that does not exist");
+      throw new NotFoundException(ExceptionErrors.INGREDIENT_DELETE_NOT_FOUND.getMessage());
     }
 
     ingredientRepository.deleteById(id);

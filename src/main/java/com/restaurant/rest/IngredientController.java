@@ -1,6 +1,6 @@
 package com.restaurant.rest;
 
-import com.restaurant.rest.docs.IngredientControllerOpenApi;
+import com.restaurant.rest.docs.IngredientControllerDocs;
 import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.dto.IngredientDto;
 import com.restaurant.rest.service.IngredientService;
@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/ingredient")
 @AllArgsConstructor
-public class IngredientController implements IngredientControllerOpenApi {
+public class IngredientController implements IngredientControllerDocs {
   private IngredientService ingredientService;
 
   @GetMapping(value = "/{id}")
