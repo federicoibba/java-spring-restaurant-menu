@@ -26,7 +26,8 @@ public class RestExceptionHandler {
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
   public ResponseEntity<ErrorDto> handleBadRequestException(final BadRequestException exception) {
     log.warn("BadRequestException occur:", exception);
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(HttpStatus.BAD_REQUEST, exception.getMessage()));
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+      .body(new ErrorDto(HttpStatus.BAD_REQUEST, exception.getMessage()));
   }
 
   @Hidden
@@ -40,11 +41,16 @@ public class RestExceptionHandler {
   @Hidden
   @ExceptionHandler(MethodArgumentNotValidException.class)
   @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ResponseEntity<ErrorDto> handleValidationExceptions(final MethodArgumentNotValidException exception){
+  public ResponseEntity<ErrorDto> handleValidationExceptions(final MethodArgumentNotValidException exception) {
     log.warn("MethodArgumentNotValidException occur:", exception);
-    List<String> errors = exception.getBindingResult().getAllErrors().stream().map(ObjectError::getDefaultMessage).toList();
+    List<String> errors = exception.getBindingResult()
+      .getAllErrors()
+      .stream()
+      .map(ObjectError::getDefaultMessage)
+      .toList();
 
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(HttpStatus.BAD_REQUEST, String.join(", ", errors)));
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+      .body(new ErrorDto(HttpStatus.BAD_REQUEST, String.join(", ", errors)));
   }
 
 }

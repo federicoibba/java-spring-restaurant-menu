@@ -18,7 +18,6 @@ public enum ExceptionErrors {
   RESTAURANT_UPDATE_NOT_FOUND("Cannot update a restaurant that does not exist"),
   RESTAURANT_DELETE_NOT_FOUND("Cannot delete a restaurant that does not exist"),
   RESTAURANT_PLATE_ALREADY_PRESENT("The plate provided is already present in the restaurant"),
-  RESTAURANT_PLATE_RESTAURANT_NOT_FOUND("Cannot add a plate to a restaurant that does not exist"),
   RESTAURANT_PLATE_CANNOT_DELETE("Cannot delete the combination of plate and restaurant provided"),
 
   // Plate Errors
@@ -28,7 +27,8 @@ public enum ExceptionErrors {
   PLATE_ALREADY_EXIST("Plate already exist"),
   PLATE_ADD_INGREDIENT_PLATE_NOT_FOUND("Cannot add an ingredient to a plate that does not exist"),
   PLATE_REMOVE_INGREDIENT_PLATE_NOT_FOUND("Cannot remove an ingredient from a plate that does not exist"),
-  PLATE_REMOVE_INGREDIENT_NEVER_ADDED("Cannot delete an ingredient from the plate because it was never one of its ingredients");
+  PLATE_REMOVE_INGREDIENT_NEVER_ADDED(
+    "Cannot delete an ingredient from the plate because it was never one of its ingredients");
 
   private final String message;
 }

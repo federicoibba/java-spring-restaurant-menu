@@ -34,18 +34,14 @@ public class Plate {
   private Set<RestaurantPlate> restaurantPlates;
 
   @ManyToMany
-  @JoinTable(
-    name = "plate_ingredients",
-    joinColumns = @JoinColumn(name = "plate_id"),
-    inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-  )
+  @JoinTable(name = "plate_ingredients", joinColumns = @JoinColumn(name = "plate_id"), inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
   private Set<Ingredient> ingredients;
 
   public void addIngredient(Ingredient ingredient) {
     ingredients.add(ingredient);
   }
 
-  public void removeIngredient(Ingredient ingredient){
+  public void removeIngredient(Ingredient ingredient) {
     ingredients.remove(ingredient);
   }
 }

@@ -25,9 +25,8 @@ public class IngredientService {
   }
 
   public Ingredient getIngredient(String id) {
-    return ingredientRepository.findById(id).orElseThrow(
-      () -> new NotFoundException(ExceptionErrors.INGREDIENT_NOT_FOUND.getMessage() + id)
-    );
+    return ingredientRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.INGREDIENT_NOT_FOUND.getMessage() + id));
   }
 
   public List<Ingredient> getIngredients() {

@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name="restaurants")
+@Table(name = "restaurants")
 public class Restaurant {
   @Id
   @Column(name = "id", length = 36)

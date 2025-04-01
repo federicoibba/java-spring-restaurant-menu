@@ -22,77 +22,34 @@ import java.util.List;
 public interface RestaurantControllerDocs {
 
   @Operation(summary = "Get a restaurant by its ID")
-  @ApiResponse(
-    responseCode = "200",
-    description = "Restaurant found",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class))
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = "Restaurant not found",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Restaurant not found\" }"))
-  )
-  ResponseEntity<RestaurantDto> getRestaurant(@Parameter(description = "ID of the restaurant to retrieve") @PathVariable("id") String id);
+  @ApiResponse(responseCode = "200", description = "Restaurant found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class)))
+  @ApiResponse(responseCode = "404", description = "Restaurant not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Restaurant not found\" }")))
+  ResponseEntity<RestaurantDto> getRestaurant(
+    @Parameter(description = "ID of the restaurant to retrieve") @PathVariable("id") String id);
 
   @Operation(summary = "Get a list of restaurants")
-  @ApiResponse(
-    responseCode = "200",
-    description = "Restaurants found",
-    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestaurantDto.class)))
-  )
+  @ApiResponse(responseCode = "200", description = "Restaurants found", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestaurantDto.class))))
   ResponseEntity<List<RestaurantDto>> getRestaurants();
 
   @Operation(summary = "Create a restaurant")
-  @ApiResponse(
-    responseCode = "201",
-    description = "Restaurant created successfully",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class))
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = "Bad request - A field was mandatory",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"name is mandatory\" }"))
-  )
+  @ApiResponse(responseCode = "201", description = "Restaurant created successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class)))
+  @ApiResponse(responseCode = "400", description = "Bad request - A field was mandatory", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"name is mandatory\" }")))
   ResponseEntity<RestaurantDto> createRestaurant(@Valid
-  @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Restaurant to create", required = true,
-    content = @Content(mediaType = "application/json",
-      schema = @Schema(implementation = RestaurantDto.class),
-      examples = @ExampleObject(value = "{ \"name\": \"My Restaurant\", \"address\": \"Via Roma\", \"city\": \"Guspini\", \"zip\": \"09036\", \"vatNumber\": \"0123456789\"  }")))
+  @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Restaurant to create", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class), examples = @ExampleObject(value = "{ \"name\": \"My Restaurant\", \"address\": \"Via Roma\", \"city\": \"Guspini\", \"zip\": \"09036\", \"vatNumber\": \"0123456789\"  }")))
   @RequestBody Restaurant restaurant);
 
   @Operation(summary = "Update a restaurant given its ID")
-  @ApiResponse(
-    responseCode = "200",
-    description = "Restaurant updated successfully",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class))
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = "Bad request - A field was mandatory",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"name is mandatory\" }"))
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = "Not found",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Cannot update a restaurant that does not exist\" }"))
-  )
-  ResponseEntity<RestaurantDto> updateRestaurant(@Parameter(description = "ID of the restaurant to update") @PathVariable("id") String id,
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Restaurant to update", required = true,
-      content = @Content(mediaType = "application/json",
-        schema = @Schema(implementation = RestaurantDto.class),
-        examples = @ExampleObject(value = "{ \"name\": \"My Restaurant\", \"address\": \"Via Roma\", \"city\": \"Guspini\", \"zip\": \"09036\", \"vatNumber\": \"0123456789\"  }")))
+  @ApiResponse(responseCode = "200", description = "Restaurant updated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class)))
+  @ApiResponse(responseCode = "400", description = "Bad request - A field was mandatory", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"name is mandatory\" }")))
+  @ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Cannot update a restaurant that does not exist\" }")))
+  ResponseEntity<RestaurantDto> updateRestaurant(
+    @Parameter(description = "ID of the restaurant to update") @PathVariable("id") String id,
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Restaurant to update", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantDto.class), examples = @ExampleObject(value = "{ \"name\": \"My Restaurant\", \"address\": \"Via Roma\", \"city\": \"Guspini\", \"zip\": \"09036\", \"vatNumber\": \"0123456789\"  }")))
     @RequestBody Restaurant restaurant);
 
   @Operation(summary = "Delete a restaurant by ID")
-  @ApiResponse(
-    responseCode = "204",
-    description = "Restaurant deleted successfully",
-    content = @Content()
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = "Restaurant to delete not found",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Cannot delete a restaurant that does not exist\" }"))
-  )
-  ResponseEntity<Object> deleteRestaurant(@Parameter(description = "ID of the restaurant to delete") @PathVariable("id") String id);
+  @ApiResponse(responseCode = "204", description = "Restaurant deleted successfully", content = @Content())
+  @ApiResponse(responseCode = "404", description = "Restaurant to delete not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Cannot delete a restaurant that does not exist\" }")))
+  ResponseEntity<Object> deleteRestaurant(
+    @Parameter(description = "ID of the restaurant to delete") @PathVariable("id") String id);
 }

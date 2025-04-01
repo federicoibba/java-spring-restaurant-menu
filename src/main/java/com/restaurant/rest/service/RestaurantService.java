@@ -5,7 +5,6 @@ import com.restaurant.rest.exception.BadRequestException;
 import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.RestaurantRepository;
-import com.restaurant.rest.dto.RestaurantDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,9 +18,8 @@ public class RestaurantService {
   private RestaurantRepository restaurantRepository;
 
   public Restaurant getRestaurant(String id) {
-    return restaurantRepository.findById(id).orElseThrow(
-            () -> new NotFoundException(ExceptionErrors.RESTAURANT_NOT_FOUND.getMessage() + id)
-    );
+    return restaurantRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.RESTAURANT_NOT_FOUND.getMessage() + id));
   }
 
   public List<Restaurant> getRestaurants() {
@@ -34,9 +32,8 @@ public class RestaurantService {
 
   @Transactional
   public Restaurant updateRestaurant(String id, Restaurant restaurant) {
-    Restaurant restaurantToUpdate = restaurantRepository.findById(id).orElseThrow(
-            () -> new BadRequestException(ExceptionErrors.RESTAURANT_UPDATE_NOT_FOUND.getMessage())
-    );
+    Restaurant restaurantToUpdate = restaurantRepository.findById(id)
+      .orElseThrow(() -> new BadRequestException(ExceptionErrors.RESTAURANT_UPDATE_NOT_FOUND.getMessage()));
 
     updateRestaurantFields(restaurant, restaurantToUpdate);
 
@@ -44,9 +41,8 @@ public class RestaurantService {
   }
 
   public void deleteRestaurant(String id) {
-    Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
-            () -> new BadRequestException(ExceptionErrors.RESTAURANT_DELETE_NOT_FOUND.getMessage())
-    );
+    Restaurant restaurant = restaurantRepository.findById(id)
+      .orElseThrow(() -> new BadRequestException(ExceptionErrors.RESTAURANT_DELETE_NOT_FOUND.getMessage()));
     restaurantRepository.delete(restaurant);
   }
 

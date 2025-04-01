@@ -14,5 +14,6 @@ public interface RestaurantPlateRepository extends JpaRepository<RestaurantPlate
   List<RestaurantPlate> findByRestaurantId(String restaurantId);
 
   @Query("SELECT rp FROM RestaurantPlate rp WHERE rp.id.restaurantId = :restaurantId AND rp.id.plateId = :plateId")
-  Optional<RestaurantPlate> findByRestaurantIdAndPlateId(@Param("restaurantId") String restaurantId, @Param("plateId") String plateId);
+  Optional<RestaurantPlate> findByRestaurantIdAndPlateId(@Param("restaurantId") String restaurantId,
+    @Param("plateId") String plateId);
 }

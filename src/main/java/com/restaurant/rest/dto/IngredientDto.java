@@ -11,9 +11,6 @@ public class IngredientDto {
   private String name;
 
   public static IngredientDto mapIngredientToDto(Ingredient ingredient) {
-    return IngredientDto.builder()
-      .id(ingredient.getId())
-      .name(ingredient.getName())
-      .build();
+    return IngredientDto.builder().id(ingredient.getId()).name(ingredient.getName()).build();
   }
 }
