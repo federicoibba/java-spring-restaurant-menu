@@ -16,11 +16,10 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class PlateService implements PlateServiceInterface {
+public class PlateService {
   private PlateRepository plateRepository;
   private IngredientRepository ingredientRepository;
 
-  @Override
   public void savePlate(Plate plate) {
     if (plateRepository.findByName(plate.getName()).isPresent()) {
       throw new BadRequestException(ExceptionErrors.PLATE_ALREADY_EXIST.getMessage());
@@ -29,7 +28,6 @@ public class PlateService implements PlateServiceInterface {
     plateRepository.save(plate);
   }
 
-  @Override
   public PlateDto getPlate(String id) {
     Plate repositoryPlate = plateRepository.findById(id)
       .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_NOT_FOUND.getMessage() + id));
@@ -37,12 +35,10 @@ public class PlateService implements PlateServiceInterface {
     return PlateDto.mapPlateToDto(repositoryPlate);
   }
 
-  @Override
   public List<PlateDto> getPlates() {
     return plateRepository.findAll().stream().map(PlateDto::mapPlateToDto).toList();
   }
 
-  @Override
   @Transactional
   public Plate updatePlate(String id, String name) {
     Plate plate = plateRepository.findById(id)
@@ -55,7 +51,6 @@ public class PlateService implements PlateServiceInterface {
     return plate;
   }
 
-  @Override
   @Transactional
   public void deletePlate(String id) {
     Plate plate = plateRepository.findById(id)
@@ -64,7 +59,6 @@ public class PlateService implements PlateServiceInterface {
     plateRepository.delete(plate);
   }
 
-  @Override
   @Transactional
   public PlateDto addIngredient(String plateId, String ingredientId) {
     Plate plate = plateRepository.findById(plateId)
@@ -78,7 +72,6 @@ public class PlateService implements PlateServiceInterface {
     return PlateDto.mapPlateToDto(plate);
   }
 
-  @Override
   @Transactional
   public void removeIngredient(String plateId, String ingredientId) {
     Plate plate = plateRepository.findById(plateId)

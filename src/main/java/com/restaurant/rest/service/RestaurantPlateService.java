@@ -17,17 +17,15 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class RestaurantPlateService implements RestaurantPlateServiceInterface {
+public class RestaurantPlateService {
     private RestaurantPlateRepository restaurantPlateRepository;
     private RestaurantRepository restaurantRepository;
     private PlateRepository plateRepository;
 
-    @Override
     public List<RestaurantPlateDto> getPlates(String restaurantId) {
         return restaurantPlateRepository.findByRestaurantId(restaurantId).stream().map(RestaurantPlateDto::mapToDto).toList();
     }
 
-    @Override
     @Transactional
     public RestaurantPlateDto addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
@@ -48,7 +46,6 @@ public class RestaurantPlateService implements RestaurantPlateServiceInterface {
         return RestaurantPlateDto.mapToDto(restaurantPlateRepository.save(restaurantPlate));
     }
 
-    @Override
     public void removePlateFromRestaurant(String restaurantId, String plateId) {
         RestaurantPlate restaurantPlate = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurantId, plateId).orElseThrow(
                 () -> new BadRequestException("Cannot delete the combination of plate and restaurant provided")

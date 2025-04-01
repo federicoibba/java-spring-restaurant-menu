@@ -14,10 +14,9 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class IngredientService implements IngredientServiceInterface {
+public class IngredientService {
   private IngredientRepository ingredientRepository;
 
-  @Override
   public IngredientDto saveIngredient(Ingredient ingredient) {
     if (ingredientRepository.findByName(ingredient.getName()).isPresent()) {
       throw new BadRequestException(ExceptionErrors.INGREDIENT_ALREADY_EXIST.getMessage());
@@ -26,19 +25,16 @@ public class IngredientService implements IngredientServiceInterface {
     return IngredientDto.mapIngredientToDto(ingredientRepository.save(ingredient));
   }
 
-  @Override
   public IngredientDto getIngredient(String id) {
     return IngredientDto.mapIngredientToDto(ingredientRepository.findById(id).orElseThrow(
       () -> new NotFoundException(ExceptionErrors.INGREDIENT_NOT_FOUND.getMessage() + id)
     ));
   }
 
-  @Override
   public List<IngredientDto> getIngredients() {
     return ingredientRepository.findAll().stream().map(IngredientDto::mapIngredientToDto).toList();
   }
 
-  @Override
   @Transactional
   public IngredientDto updateIngredient(String id, String name) {
     if (ingredientRepository.findByName(name).isPresent()) {
@@ -55,7 +51,6 @@ public class IngredientService implements IngredientServiceInterface {
     return IngredientDto.mapIngredientToDto(ingredient);
   }
 
-  @Override
   public void deleteIngredient(String id) {
     if (!ingredientRepository.existsById(id)) {
       throw new NotFoundException(ExceptionErrors.INGREDIENT_DELETE_NOT_FOUND.getMessage());
