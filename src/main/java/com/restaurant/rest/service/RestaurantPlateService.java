@@ -9,7 +9,6 @@ import com.restaurant.rest.exception.BadRequestException;
 import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.RestaurantPlateRepository;
-import com.restaurant.rest.repository.RestaurantRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RestaurantPlateService {
     private RestaurantPlateRepository restaurantPlateRepository;
-    private RestaurantRepository restaurantRepository;
+    private RestaurantService restaurantService;
     private PlateService plateService;
 
     public List<RestaurantPlateDto> getPlates(String restaurantId) {
-        if (!restaurantRepository.existsById(restaurantId)){
+        if (!restaurantService.doesRestaurantExist(restaurantId)){
             throw new NotFoundException(ExceptionErrors.RESTAURANT_NOT_FOUND.getMessage() + restaurantId);
         }
 
@@ -34,9 +33,7 @@ public class RestaurantPlateService {
 
     @Transactional
     public RestaurantPlateDto addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
-                () -> new NotFoundException(ExceptionErrors.RESTAURANT_PLATE_RESTAURANT_NOT_FOUND.getMessage())
-        );
+        Restaurant restaurant = restaurantService.getRestaurant(restaurantId);
         Plate plate = plateService.getPlate(restaurantPlateDto.getPlateId());
 
         Optional<RestaurantPlate> restaurantPlateEntry = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurantId, restaurantPlateDto.getPlateId());

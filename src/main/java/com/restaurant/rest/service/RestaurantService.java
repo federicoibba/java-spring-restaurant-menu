@@ -18,29 +18,29 @@ import java.util.Optional;
 public class RestaurantService {
   private RestaurantRepository restaurantRepository;
 
-  public RestaurantDto getRestaurant(String id) {
-    return restaurantRepository.findById(id).map(RestaurantDto::mapToDto).orElseThrow(
+  public Restaurant getRestaurant(String id) {
+    return restaurantRepository.findById(id).orElseThrow(
             () -> new NotFoundException(ExceptionErrors.RESTAURANT_NOT_FOUND.getMessage() + id)
     );
   }
 
-  public List<RestaurantDto> getRestaurants() {
-    return restaurantRepository.findAll().stream().map(RestaurantDto::mapToDto).toList();
+  public List<Restaurant> getRestaurants() {
+    return restaurantRepository.findAll();
   }
 
-  public RestaurantDto createRestaurant(Restaurant restaurant) {
-    return RestaurantDto.mapToDto(restaurantRepository.save(restaurant));
+  public Restaurant createRestaurant(Restaurant restaurant) {
+    return restaurantRepository.save(restaurant);
   }
 
   @Transactional
-  public RestaurantDto updateRestaurant(String id, Restaurant restaurant) {
+  public Restaurant updateRestaurant(String id, Restaurant restaurant) {
     Restaurant restaurantToUpdate = restaurantRepository.findById(id).orElseThrow(
             () -> new BadRequestException(ExceptionErrors.RESTAURANT_UPDATE_NOT_FOUND.getMessage())
     );
 
     updateRestaurantFields(restaurant, restaurantToUpdate);
 
-    return RestaurantDto.mapToDto(restaurantToUpdate);
+    return restaurantToUpdate;
   }
 
   public void deleteRestaurant(String id) {
@@ -48,6 +48,10 @@ public class RestaurantService {
             () -> new BadRequestException(ExceptionErrors.RESTAURANT_DELETE_NOT_FOUND.getMessage())
     );
     restaurantRepository.delete(restaurant);
+  }
+
+  public boolean doesRestaurantExist(String id) {
+    return restaurantRepository.existsById(id);
   }
 
   private void updateRestaurantFields(Restaurant source, Restaurant target) {
