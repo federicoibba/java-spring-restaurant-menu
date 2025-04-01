@@ -5,7 +5,6 @@ import com.restaurant.rest.exception.BadRequestException;
 import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.IngredientRepository;
-import com.restaurant.rest.dto.IngredientDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,26 +16,26 @@ import java.util.List;
 public class IngredientService {
   private IngredientRepository ingredientRepository;
 
-  public IngredientDto saveIngredient(Ingredient ingredient) {
+  public Ingredient saveIngredient(Ingredient ingredient) {
     if (ingredientRepository.findByName(ingredient.getName()).isPresent()) {
       throw new BadRequestException(ExceptionErrors.INGREDIENT_ALREADY_EXIST.getMessage());
     }
 
-    return IngredientDto.mapIngredientToDto(ingredientRepository.save(ingredient));
+    return ingredientRepository.save(ingredient);
   }
 
-  public IngredientDto getIngredient(String id) {
-    return IngredientDto.mapIngredientToDto(ingredientRepository.findById(id).orElseThrow(
+  public Ingredient getIngredient(String id) {
+    return ingredientRepository.findById(id).orElseThrow(
       () -> new NotFoundException(ExceptionErrors.INGREDIENT_NOT_FOUND.getMessage() + id)
-    ));
+    );
   }
 
-  public List<IngredientDto> getIngredients() {
-    return ingredientRepository.findAll().stream().map(IngredientDto::mapIngredientToDto).toList();
+  public List<Ingredient> getIngredients() {
+    return ingredientRepository.findAll();
   }
 
   @Transactional
-  public IngredientDto updateIngredient(String id, String name) {
+  public Ingredient updateIngredient(String id, String name) {
     if (ingredientRepository.findByName(name).isPresent()) {
       throw new BadRequestException(ExceptionErrors.INGREDIENT_ALREADY_EXIST.getMessage());
     }
@@ -48,7 +47,7 @@ public class IngredientService {
       ingredient.setName(name);
     }
 
-    return IngredientDto.mapIngredientToDto(ingredient);
+    return ingredient;
   }
 
   public void deleteIngredient(String id) {

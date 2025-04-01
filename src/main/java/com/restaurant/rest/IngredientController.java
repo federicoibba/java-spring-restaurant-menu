@@ -1,8 +1,8 @@
 package com.restaurant.rest;
 
 import com.restaurant.rest.docs.IngredientControllerDocs;
-import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.dto.IngredientDto;
+import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.service.IngredientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,22 +28,26 @@ public class IngredientController implements IngredientControllerDocs {
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<IngredientDto> getIngredient(@PathVariable("id") String id) {
-    return ResponseEntity.ok().body(ingredientService.getIngredient(id));
+    return ResponseEntity.ok().body(IngredientDto.mapIngredientToDto(ingredientService.getIngredient(id)));
   }
 
   @GetMapping
   public ResponseEntity<List<IngredientDto>> getIngredients() {
-    return ResponseEntity.ok().body(ingredientService.getIngredients());
+    return ResponseEntity.ok()
+      .body(ingredientService.getIngredients().stream().map(IngredientDto::mapIngredientToDto).toList());
   }
 
   @PostMapping
   public ResponseEntity<IngredientDto> createIngredient(@Valid @RequestBody Ingredient ingredient) {
-    return new ResponseEntity<>(ingredientService.saveIngredient(ingredient), HttpStatusCode.valueOf(201));
+    return new ResponseEntity<>(IngredientDto.mapIngredientToDto(ingredientService.saveIngredient(ingredient)),
+      HttpStatusCode.valueOf(201));
   }
 
   @PatchMapping(value = "/{id}")
-  public ResponseEntity<IngredientDto> updateIngredient(@PathVariable("id") String id, @Valid @RequestBody Ingredient ingredient){
-    return ResponseEntity.ok().body(ingredientService.updateIngredient(id, ingredient.getName()));
+  public ResponseEntity<IngredientDto> updateIngredient(@PathVariable("id") String id,
+    @Valid @RequestBody Ingredient ingredient) {
+    return ResponseEntity.ok()
+      .body(IngredientDto.mapIngredientToDto(ingredientService.updateIngredient(id, ingredient.getName())));
   }
 
   @DeleteMapping(value = "/{id}")

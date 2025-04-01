@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PlateService {
   private PlateRepository plateRepository;
-  private IngredientRepository ingredientRepository;
+  private IngredientService ingredientService;
 
   public void savePlate(Plate plate) {
     if (plateRepository.findByName(plate.getName()).isPresent()) {
@@ -64,8 +64,7 @@ public class PlateService {
     Plate plate = plateRepository.findById(plateId)
       .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_ADD_INGREDIENT_PLATE_NOT_FOUND.getMessage()));
 
-    Ingredient ingredient = ingredientRepository.findById(ingredientId)
-      .orElseThrow(() -> new BadRequestException(ExceptionErrors.PLATE_ADD_INGREDIENT_NOT_FOUND.getMessage()));
+    Ingredient ingredient = ingredientService.getIngredient(ingredientId);
 
     plate.addIngredient(ingredient);
 
@@ -77,8 +76,7 @@ public class PlateService {
     Plate plate = plateRepository.findById(plateId)
       .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_REMOVE_INGREDIENT_PLATE_NOT_FOUND.getMessage()));
 
-    Ingredient ingredient = ingredientRepository.findById(ingredientId)
-      .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_REMOVE_INGREDIENT_NOT_FOUND.getMessage()));
+    Ingredient ingredient = ingredientService.getIngredient(ingredientId);
 
     if (plate.getIngredients().contains(ingredient)) {
       plate.removeIngredient(ingredient);
