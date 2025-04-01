@@ -4,6 +4,7 @@ import com.restaurant.rest.entity.Plate;
 import com.restaurant.rest.entity.RestaurantPlate;
 import com.restaurant.rest.entity.RestaurantPlateId;
 import com.restaurant.rest.exception.BadRequestException;
+import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.PlateRepository;
 import com.restaurant.rest.repository.RestaurantPlateRepository;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +27,7 @@ public class RestaurantPlateService {
 
     public List<RestaurantPlateDto> getPlates(String restaurantId) {
         if (!restaurantRepository.existsById(restaurantId)){
-            throw new NotFoundException("Restaurant not found");
+            throw new NotFoundException(ExceptionErrors.RESTAURANT_NOT_FOUND.getMessage() + restaurantId);
         }
 
         return restaurantPlateRepository.findByRestaurantId(restaurantId).stream().map(RestaurantPlateDto::mapToDto).toList();
@@ -34,11 +36,17 @@ public class RestaurantPlateService {
     @Transactional
     public RestaurantPlateDto addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
-                () -> new NotFoundException("Cannot add a plate to a restaurant that does not exist")
+                () -> new NotFoundException(ExceptionErrors.RESTAURANT_PLATE_RESTAURANT_NOT_FOUND.getMessage())
         );
         Plate plate = plateRepository.findById(restaurantPlateDto.getPlateId()).orElseThrow(
-                () -> new BadRequestException("Cannot add a plate that does not exist to a restaurant")
+                () -> new BadRequestException(ExceptionErrors.RESTAURANT_PLATE_PLATE_NOT_FOUND.getMessage())
         );
+
+        Optional<RestaurantPlate> restaurantPlateEntry = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurantId, restaurantPlateDto.getPlateId());
+
+        if (restaurantPlateEntry.isPresent()) {
+            throw new BadRequestException(ExceptionErrors.RESTAURANT_PLATE_ALREADY_PRESENT.getMessage());
+        }
 
         RestaurantPlateId id = new RestaurantPlateId(restaurant.getId(), plate.getId());
 
@@ -53,7 +61,7 @@ public class RestaurantPlateService {
 
     public void removePlateFromRestaurant(String restaurantId, String plateId) {
         RestaurantPlate restaurantPlate = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurantId, plateId).orElseThrow(
-                () -> new BadRequestException("Cannot delete the combination of plate and restaurant provided")
+                () -> new BadRequestException(ExceptionErrors.RESTAURANT_PLATE_CANNOT_DELETE.getMessage())
         );
 
         restaurantPlateRepository.delete(restaurantPlate);

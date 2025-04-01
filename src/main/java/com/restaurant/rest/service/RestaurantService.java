@@ -2,6 +2,7 @@ package com.restaurant.rest.service;
 
 import com.restaurant.rest.entity.Restaurant;
 import com.restaurant.rest.exception.BadRequestException;
+import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.RestaurantRepository;
 import com.restaurant.rest.dto.RestaurantDto;
@@ -19,7 +20,7 @@ public class RestaurantService {
 
   public RestaurantDto getRestaurant(String id) {
     return restaurantRepository.findById(id).map(RestaurantDto::mapToDto).orElseThrow(
-            () -> new NotFoundException("Restaurant not found with id" + id)
+            () -> new NotFoundException(ExceptionErrors.RESTAURANT_NOT_FOUND.getMessage() + id)
     );
   }
 
@@ -34,7 +35,7 @@ public class RestaurantService {
   @Transactional
   public RestaurantDto updateRestaurant(String id, Restaurant restaurant) {
     Restaurant restaurantToUpdate = restaurantRepository.findById(id).orElseThrow(
-            () -> new BadRequestException("Cannot update a restaurant that does not exist")
+            () -> new BadRequestException(ExceptionErrors.RESTAURANT_UPDATE_NOT_FOUND.getMessage())
     );
 
     updateRestaurantFields(restaurant, restaurantToUpdate);
@@ -44,7 +45,7 @@ public class RestaurantService {
 
   public void deleteRestaurant(String id) {
     Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
-            () -> new BadRequestException("Cannot update a restaurant that does not exist")
+            () -> new BadRequestException(ExceptionErrors.RESTAURANT_DELETE_NOT_FOUND.getMessage())
     );
     restaurantRepository.delete(restaurant);
   }

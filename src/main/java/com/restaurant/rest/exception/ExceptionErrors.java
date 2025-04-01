@@ -13,6 +13,15 @@ public enum ExceptionErrors {
   INGREDIENT_UPDATE_NOT_FOUND("Cannot update an ingredient that does not exist"),
   INGREDIENT_DELETE_NOT_FOUND("Cannot delete an ingredient that does not exist"),
 
+  // Restaurant Errors
+  RESTAURANT_NOT_FOUND("Restaurant not found with id "),
+  RESTAURANT_UPDATE_NOT_FOUND("Cannot update a restaurant that does not exist"),
+  RESTAURANT_DELETE_NOT_FOUND("Cannot delete a restaurant that does not exist"),
+  RESTAURANT_PLATE_ALREADY_PRESENT("The plate provided is already present in the restaurant"),
+  RESTAURANT_PLATE_RESTAURANT_NOT_FOUND("Cannot add a plate to a restaurant that does not exist"),
+  RESTAURANT_PLATE_PLATE_NOT_FOUND("Cannot add a plate that does not exist to a restaurant"),
+  RESTAURANT_PLATE_CANNOT_DELETE("Cannot delete the combination of plate and restaurant provided"),
+
   // Plate Errors
   PLATE_NOT_FOUND("Plate not found with id "),
   PLATE_UPDATE_NOT_FOUND("Cannot update a plate that does not exist"),
