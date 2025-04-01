@@ -1,8 +1,8 @@
 package com.restaurant.rest;
 
+import com.restaurant.rest.docs.PlateControllerDocs;
 import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.entity.Plate;
-import com.restaurant.rest.dto.IngredientDto;
 import com.restaurant.rest.dto.PlateDto;
 import com.restaurant.rest.service.PlateService;
 import jakarta.validation.Valid;
@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/plate")
 @AllArgsConstructor
-public class PlateController {
+public class PlateController implements PlateControllerDocs {
   private PlateService plateService;
 
   @GetMapping(value = "/{id}")
@@ -48,7 +48,7 @@ public class PlateController {
   }
 
   @PatchMapping(value = "/{id}")
-  public ResponseEntity<Plate> updatePlate(@PathVariable("id") String id, @RequestBody() Plate plate) {
+  public ResponseEntity<Plate> updatePlate(@PathVariable("id") String id, @RequestBody Plate plate) {
     return ResponseEntity.ok().body(plateService.updatePlate(id, plate.getName()));
   }
 
@@ -59,10 +59,10 @@ public class PlateController {
   }
 
   @PostMapping(value = "/{id}/ingredient")
-  public ResponseEntity<List<IngredientDto>> addIngredients(@PathVariable("id") String plateId, @RequestBody List<Ingredient> ingredients) {
+  public ResponseEntity<PlateDto> addIngredient(@PathVariable("id") String plateId, @RequestBody Ingredient ingredient) {
     try {
-      List<IngredientDto> ingredientList = plateService.addIngredient(plateId, ingredients.get(0).getId());
-      return new ResponseEntity<>(ingredientList, HttpStatusCode.valueOf(201));
+      PlateDto plate = plateService.addIngredient(plateId, ingredient.getId());
+      return new ResponseEntity<>(plate, HttpStatusCode.valueOf(201));
     } catch (Exception e) {
       return new ResponseEntity<>(HttpStatusCode.valueOf(500));
     }

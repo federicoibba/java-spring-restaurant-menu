@@ -3,9 +3,9 @@ package com.restaurant.rest.service;
 import com.restaurant.rest.entity.Ingredient;
 import com.restaurant.rest.entity.Plate;
 import com.restaurant.rest.exception.BadRequestException;
+import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.PlateRepository;
-import com.restaurant.rest.dto.IngredientDto;
 import com.restaurant.rest.repository.IngredientRepository;
 import com.restaurant.rest.dto.PlateDto;
 import jakarta.transaction.Transactional;
@@ -22,14 +22,17 @@ public class PlateService implements PlateServiceInterface {
 
   @Override
   public void savePlate(Plate plate) {
+    if (plateRepository.findByName(plate.getName()).isPresent()) {
+      throw new BadRequestException(ExceptionErrors.PLATE_ALREADY_EXIST.getMessage());
+    }
+
     plateRepository.save(plate);
   }
 
   @Override
   public PlateDto getPlate(String id) {
-    Plate repositoryPlate = plateRepository.findById(id).orElseThrow(
-            () -> new NotFoundException("Plate not found with id " + id)
-    );
+    Plate repositoryPlate = plateRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_NOT_FOUND.getMessage() + id));
 
     return PlateDto.mapPlateToDto(repositoryPlate);
   }
@@ -43,7 +46,7 @@ public class PlateService implements PlateServiceInterface {
   @Transactional
   public Plate updatePlate(String id, String name) {
     Plate plate = plateRepository.findById(id)
-      .orElseThrow(() -> new BadRequestException("Cannot update a plate that does not exist"));
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_UPDATE_NOT_FOUND.getMessage()));
 
     if (name != null) {
       plate.setName(name);
@@ -52,43 +55,43 @@ public class PlateService implements PlateServiceInterface {
     return plate;
   }
 
-
   @Override
   @Transactional
   public void deletePlate(String id) {
-    Plate plate = plateRepository.findById(id).orElseThrow(
-            () -> new BadRequestException("Cannot update a plate that does not exist")
-    );
+    Plate plate = plateRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_DELETE_NOT_FOUND.getMessage()));
+
     plateRepository.delete(plate);
   }
 
   @Override
   @Transactional
-  public List<IngredientDto> addIngredient(String plateId, String ingredientId) {
-    Plate plate = plateRepository.findById(plateId).orElseThrow(
-            () -> new BadRequestException("Cannot add an ingredient to a plate that does not exist")
-    );
-    Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow();
+  public PlateDto addIngredient(String plateId, String ingredientId) {
+    Plate plate = plateRepository.findById(plateId)
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_ADD_INGREDIENT_PLATE_NOT_FOUND.getMessage()));
+
+    Ingredient ingredient = ingredientRepository.findById(ingredientId)
+      .orElseThrow(() -> new BadRequestException(ExceptionErrors.PLATE_ADD_INGREDIENT_NOT_FOUND.getMessage()));
 
     plate.addIngredient(ingredient);
 
-    return plate.getIngredients().stream().map(IngredientDto::mapIngredientToDto).toList();
+    return PlateDto.mapPlateToDto(plate);
   }
 
   @Override
   @Transactional
   public void removeIngredient(String plateId, String ingredientId) {
-    Plate plate = plateRepository.findById(plateId).orElseThrow(
-            () -> new BadRequestException("Cannot remove an ingredient from a plate that does not exist")
-    );
-    Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(
-            () -> new BadRequestException("Cannot remove an ingredient that does not exist from a plate")
-    );
+    Plate plate = plateRepository.findById(plateId)
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_REMOVE_INGREDIENT_PLATE_NOT_FOUND.getMessage()));
+
+    Ingredient ingredient = ingredientRepository.findById(ingredientId)
+      .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_REMOVE_INGREDIENT_NOT_FOUND.getMessage()));
 
     if (plate.getIngredients().contains(ingredient)) {
       plate.removeIngredient(ingredient);
     } else {
-      throw new RuntimeException("Ingredient " + ingredient.getName() + "is not present");
+      throw new BadRequestException(ExceptionErrors.PLATE_REMOVE_INGREDIENT_NEVER_ADDED.getMessage());
     }
+
   }
 }

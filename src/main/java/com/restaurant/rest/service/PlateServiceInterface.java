@@ -1,7 +1,6 @@
 package com.restaurant.rest.service;
 
 import com.restaurant.rest.entity.Plate;
-import com.restaurant.rest.dto.IngredientDto;
 import com.restaurant.rest.dto.PlateDto;
 
 import java.util.List;
@@ -12,6 +11,6 @@ public interface PlateServiceInterface {
   List<PlateDto> getPlates();
   Plate updatePlate(String id, String name);
   void deletePlate(String id);
-  List<IngredientDto> addIngredient(String plateId, String ingredientId);
+  PlateDto addIngredient(String plateId, String ingredientId);
   void removeIngredient(String plateId, String ingredientId);
 }

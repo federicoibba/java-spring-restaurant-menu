@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Ingredient API")
+@Tag(name = "Ingredient", description = "APIs to interact with ingredients")
 public interface IngredientControllerDocs {
 
     @Operation(summary = "Get an ingredient by its ID")
