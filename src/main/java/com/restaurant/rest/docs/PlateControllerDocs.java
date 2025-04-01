@@ -55,7 +55,7 @@ public interface PlateControllerDocs {
     description = "Bad request - name is mandatory",
     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"BAD_REQUEST\", \"message\": \"name is mandatory\" }"))
   )
-  ResponseEntity<Plate> savePlate(@Valid
+  ResponseEntity<PlateDto> savePlate(@Valid
   @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Plate to create", required = true,
     content = @Content(mediaType = "application/json",
       schema = @Schema(implementation = PlateDto.class),
@@ -78,7 +78,7 @@ public interface PlateControllerDocs {
     description = "Plate not found",
     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class, example = "{ \"code\": \"NOT_FOUND\", \"message\": \"Cannot update a plate that does not exist\" }"))
   )
-  ResponseEntity<Plate> updatePlate(@PathVariable("id") String id,
+  ResponseEntity<PlateDto> updatePlate(@PathVariable("id") String id,
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Plate to update", required = true,
       content = @Content(mediaType = "application/json",
         schema = @Schema(implementation = PlateDto.class),

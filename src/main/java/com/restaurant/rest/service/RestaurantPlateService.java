@@ -23,7 +23,7 @@ import java.util.Optional;
 public class RestaurantPlateService {
     private RestaurantPlateRepository restaurantPlateRepository;
     private RestaurantRepository restaurantRepository;
-    private PlateRepository plateRepository;
+    private PlateService plateService;
 
     public List<RestaurantPlateDto> getPlates(String restaurantId) {
         if (!restaurantRepository.existsById(restaurantId)){
@@ -38,9 +38,7 @@ public class RestaurantPlateService {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
                 () -> new NotFoundException(ExceptionErrors.RESTAURANT_PLATE_RESTAURANT_NOT_FOUND.getMessage())
         );
-        Plate plate = plateRepository.findById(restaurantPlateDto.getPlateId()).orElseThrow(
-                () -> new BadRequestException(ExceptionErrors.RESTAURANT_PLATE_PLATE_NOT_FOUND.getMessage())
-        );
+        Plate plate = plateService.getPlate(restaurantPlateDto.getPlateId());
 
         Optional<RestaurantPlate> restaurantPlateEntry = restaurantPlateRepository.findByRestaurantIdAndPlateId(restaurantId, restaurantPlateDto.getPlateId());
 

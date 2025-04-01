@@ -20,23 +20,21 @@ public class PlateService {
   private PlateRepository plateRepository;
   private IngredientService ingredientService;
 
-  public void savePlate(Plate plate) {
+  public Plate savePlate(Plate plate) {
     if (plateRepository.findByName(plate.getName()).isPresent()) {
       throw new BadRequestException(ExceptionErrors.PLATE_ALREADY_EXIST.getMessage());
     }
 
-    plateRepository.save(plate);
+    return plateRepository.save(plate);
   }
 
-  public PlateDto getPlate(String id) {
-    Plate repositoryPlate = plateRepository.findById(id)
+  public Plate getPlate(String id) {
+    return plateRepository.findById(id)
       .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_NOT_FOUND.getMessage() + id));
-
-    return PlateDto.mapPlateToDto(repositoryPlate);
   }
 
-  public List<PlateDto> getPlates() {
-    return plateRepository.findAll().stream().map(PlateDto::mapPlateToDto).toList();
+  public List<Plate> getPlates() {
+    return plateRepository.findAll();
   }
 
   @Transactional
@@ -60,7 +58,7 @@ public class PlateService {
   }
 
   @Transactional
-  public PlateDto addIngredient(String plateId, String ingredientId) {
+  public Plate addIngredient(String plateId, String ingredientId) {
     Plate plate = plateRepository.findById(plateId)
       .orElseThrow(() -> new NotFoundException(ExceptionErrors.PLATE_ADD_INGREDIENT_PLATE_NOT_FOUND.getMessage()));
 
@@ -68,7 +66,7 @@ public class PlateService {
 
     plate.addIngredient(ingredient);
 
-    return PlateDto.mapPlateToDto(plate);
+    return plate;
   }
 
   @Transactional
@@ -83,6 +81,5 @@ public class PlateService {
     } else {
       throw new BadRequestException(ExceptionErrors.PLATE_REMOVE_INGREDIENT_NEVER_ADDED.getMessage());
     }
-
   }
 }
