@@ -6,8 +6,6 @@ import com.restaurant.rest.exception.BadRequestException;
 import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
 import com.restaurant.rest.repository.PlateRepository;
-import com.restaurant.rest.repository.IngredientRepository;
-import com.restaurant.rest.dto.PlateDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

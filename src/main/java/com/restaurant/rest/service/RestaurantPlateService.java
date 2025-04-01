@@ -1,15 +1,14 @@
 package com.restaurant.rest.service;
 
+import com.restaurant.rest.dto.RestaurantPlateDto;
 import com.restaurant.rest.entity.Plate;
+import com.restaurant.rest.entity.Restaurant;
 import com.restaurant.rest.entity.RestaurantPlate;
 import com.restaurant.rest.entity.RestaurantPlateId;
 import com.restaurant.rest.exception.BadRequestException;
 import com.restaurant.rest.exception.ExceptionErrors;
 import com.restaurant.rest.exception.NotFoundException;
-import com.restaurant.rest.repository.PlateRepository;
 import com.restaurant.rest.repository.RestaurantPlateRepository;
-import com.restaurant.rest.dto.RestaurantPlateDto;
-import com.restaurant.rest.entity.Restaurant;
 import com.restaurant.rest.repository.RestaurantRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
