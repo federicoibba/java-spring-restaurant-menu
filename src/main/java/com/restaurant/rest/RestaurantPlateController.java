@@ -23,22 +23,22 @@ import java.util.List;
 public class RestaurantPlateController implements RestaurantPlateControllerDocs {
   private RestaurantPlateService restaurantPlateService;
 
-
   @GetMapping
   public ResponseEntity<List<RestaurantPlateDto>> getPlates(@PathVariable("restaurantId") String restaurantId) {
-    return ResponseEntity.ok(restaurantPlateService.getPlates(restaurantId));
+    return ResponseEntity.ok(
+      restaurantPlateService.getPlates(restaurantId).stream().map(RestaurantPlateDto::mapToDto).toList());
   }
 
   @PostMapping
-  public ResponseEntity<RestaurantPlateDto> addPlateToRestaurant(
-    @PathVariable("restaurantId") String restaurantId,
-    @Valid @RequestBody RestaurantPlateDto restaurantPlateDto
-  ) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(restaurantPlateService.addPlateToRestaurant(restaurantId, restaurantPlateDto));
+  public ResponseEntity<RestaurantPlateDto> addPlateToRestaurant(@PathVariable("restaurantId") String restaurantId,
+    @Valid @RequestBody RestaurantPlateDto restaurantPlateDto) {
+    return ResponseEntity.status(HttpStatus.CREATED)
+      .body(RestaurantPlateDto.mapToDto(restaurantPlateService.addPlateToRestaurant(restaurantId, restaurantPlateDto)));
   }
 
   @DeleteMapping(value = "/{plateId}")
-  public ResponseEntity<Void> removePlateFromRestaurant( @PathVariable("restaurantId") String restaurantId, @PathVariable("plateId") String plateId) {
+  public ResponseEntity<Void> removePlateFromRestaurant(@PathVariable("restaurantId") String restaurantId,
+    @PathVariable("plateId") String plateId) {
     restaurantPlateService.removePlateFromRestaurant(restaurantId, plateId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }

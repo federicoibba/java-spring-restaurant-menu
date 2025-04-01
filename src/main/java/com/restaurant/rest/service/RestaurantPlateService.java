@@ -23,16 +23,16 @@ public class RestaurantPlateService {
     private RestaurantService restaurantService;
     private PlateService plateService;
 
-    public List<RestaurantPlateDto> getPlates(String restaurantId) {
+    public List<RestaurantPlate> getPlates(String restaurantId) {
         if (!restaurantService.doesRestaurantExist(restaurantId)){
             throw new NotFoundException(ExceptionErrors.RESTAURANT_NOT_FOUND.getMessage() + restaurantId);
         }
 
-        return restaurantPlateRepository.findByRestaurantId(restaurantId).stream().map(RestaurantPlateDto::mapToDto).toList();
+        return restaurantPlateRepository.findByRestaurantId(restaurantId);
     }
 
     @Transactional
-    public RestaurantPlateDto addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
+    public RestaurantPlate addPlateToRestaurant(String restaurantId, RestaurantPlateDto restaurantPlateDto) {
         Restaurant restaurant = restaurantService.getRestaurant(restaurantId);
         Plate plate = plateService.getPlate(restaurantPlateDto.getPlateId());
 
@@ -50,7 +50,7 @@ public class RestaurantPlateService {
         restaurantPlate.setPlate(plate);
         restaurantPlate.setPrice(restaurantPlateDto.getPrice());
 
-        return RestaurantPlateDto.mapToDto(restaurantPlateRepository.save(restaurantPlate));
+        return restaurantPlateRepository.save(restaurantPlate);
     }
 
     public void removePlateFromRestaurant(String restaurantId, String plateId) {
